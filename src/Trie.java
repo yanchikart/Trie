@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Scanner;
 public final class Trie{
     private static final class Node{
-        char keys[] = new char[0];
+        char[] keys = new char[0];
         Node[] vals = new Node[0];
         boolean terminal = false;
         int size = 0;
@@ -112,11 +112,7 @@ public final class Trie{
             if (n == str1.length){
                 int nc = str1.length + (str1.length >>> 1);
                 if(str1.length + 1> nc) nc = str1.length+ 1;
-                String[] str2 = new String[nc];
-                for(int i = 0; i < n; i++){
-                    str2[i] = str1[i];
-                }
-                str1 = str2;
+                str1 = java.util.Arrays.copyOf(str1, nc);
 
             }
             str1[n++] = str;
@@ -124,9 +120,7 @@ public final class Trie{
 
 
         String[] toArray() {
-            String[] out = new String[n];
-            for (int i = 0; i < n; i++) out[i] = str1[i];
-            return out;
+            return java.util.Arrays.copyOf(str1, n);
         }
     }
     private final Node root = new Node();
@@ -174,8 +168,9 @@ public final class Trie{
 
     public boolean remove(String word) {
         if (word == null) return false;
-        if (!contains(word)) return false;       // чтобы вернуть корректный результат
-        removeRec(root, word, 0);                // чистим ветки
+        if (!contains(word)) return false;// чтобы вернуть корректный результат
+        removeRec(root, word, 0);// чистим ветки
+        words--;
         return true;
     }
 
@@ -232,8 +227,8 @@ public final class Trie{
         String[] all = getByPrefix("");
         int saved = 0;
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
-            for (int i = 0; i < all.length; i++) {
-                bw.write(all[i]);
+            for (String line : all) {
+                bw.write(line);
                 bw.newLine();
                 saved++;
             }
@@ -375,7 +370,7 @@ final class TrieDemo {
 
     private static String readStr(Scanner sc, String prompt) {
         System.out.print(prompt);
-        return sc.nextLine().trim();  // угловые скобки больше не нужны — вводим как есть
+        return sc.nextLine().trim();
     }
 
     public static void main(String[] args) {
@@ -409,7 +404,8 @@ final class TrieDemo {
                         System.out.println("(нет слов по префиксу)");
                     } else {
                         String[] arr = t.getByPrefix(p);
-                        for (int i = 0; i < arr.length; i++) System.out.println(arr[i]);
+                        for (String element : arr)
+                            System.out.println(element);
                     }
                     break;
                 }
@@ -421,7 +417,8 @@ final class TrieDemo {
                         System.out.println("(нет слов по префиксу)");
                     } else {
                         String[] a = t.autocomplete(p, n);
-                        for (int i = 0; i < a.length; i++) System.out.println(a[i]);
+                        for (String element : a)
+                            System.out.println(element);
                     }
                     break;
                 }

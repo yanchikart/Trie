@@ -460,7 +460,7 @@ final class TrieDemo {
                     sc.close();
                     return;
                 default:
-                    System.out.println("Неверный пункт. Введите 0..13.");
+                    System.out.println("Неверный пункт. Введите 0..12.");
             }
             System.out.println();
         }
